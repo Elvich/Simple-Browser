@@ -14,44 +14,53 @@ struct ContentView: View {
     var body: some View {
         ZStack {
             WebView(currentURLString: $currentURLString, initialURL: URL(string: currentURLString)!)
+        
             
+        }
+        .toolbar{
             
-            VStack{
-                Spacer()
-                
+            ToolbarItem(placement: .bottomBar) {
+                Button(action:{
+                    currentURLString = "https://www.ya.ru"
+                }, label:{
+                    Image(systemName: "house")
+                })
+            }
+            
+            ToolbarItem(placement: .bottomBar){
                 HStack{
+                    if currentURLString != "https://ya.ru/" {
+                        
+                    
+                    TextField(
+                        "Найдется все",
+                        text: $inputText
+                        
+                    )
+                    .disableAutocorrection(true)
+                    .onSubmit {
+                        loadRequest(from: inputText)
+                    }
+                    .onChange(of: currentURLString) { newValue in
+                        inputText = newValue
+                    }
+                        
                     Spacer()
                     
-                    if currentURLString != "https://www.ya.ru" {
-                        
-                        TextField(
-                            "Адресная строка",
-                            text: $inputText
-                            
-                        )
-                        .disableAutocorrection(true)
-                        .onSubmit {
-                            loadRequest(from: inputText)
-                        }
-                        .onChange(of: currentURLString) { newValue in
-                            inputText = newValue
-                        }
-                        
-                        if !inputText.isEmpty {
-                            Button(action: {
-                                inputText = ""}) {
-                                    Image(systemName: "xmark.circle.fill")
-                                }
-                        }
+                    if !inputText.isEmpty {
+                        Button(action: {
+                            inputText = ""}) {
+                                Image(systemName: "xmark.circle.fill")
+                            }
                     }
-                    
-                    
                 }
-                .padding()
-                .background(Color.black)
-                .textFieldStyle(.roundedBorder)
+                }
             }
+
+            
         }
+        
+        
     }
     
     func loadRequest(from text: String) {
