@@ -8,12 +8,13 @@
 import SwiftUI
 
 struct ContentView: View {
-    
     @State private var currentURLString: String = "https://www.ya.ru"
+    @State private var inputText: String = "https://www.ya.ru"
+    
     var body: some View {
         ZStack {
             WebView(currentURLString: $currentURLString, initialURL: URL(string: currentURLString)!)
-                        
+            
             
             VStack{
                 Spacer()
@@ -25,18 +26,22 @@ struct ContentView: View {
                         
                         TextField(
                             "Адресная строка",
-                            text: $currentURLString
+                            text: $inputText
                             
                         )
                         .disableAutocorrection(true)
+                        .onSubmit {
+                            loadRequest(from: inputText)
+                        }
+                        .onChange(of: currentURLString) { newValue in
+                            inputText = newValue
+                        }
                         
-                        if !currentURLString.isEmpty {
+                        if !inputText.isEmpty {
                             Button(action: {
-                                currentURLString = ""}) {
-                                Image(systemName: "xmark.circle.fill")
+                                inputText = ""}) {
+                                    Image(systemName: "xmark.circle.fill")
                                 }
-                                .transition(AnyTransition.opacity.combined(with: .scale))
-                                .animation(.easeOut(duration: 0.3), value: currentURLString.isEmpty)
                         }
                     }
                     
@@ -48,7 +53,36 @@ struct ContentView: View {
             }
         }
     }
+    
+    func loadRequest(from text: String) {
+        guard let url = createValidURL(from: text) else {
+            print("Неверный URL. Выполняем поиск...")
+            performSearch(query: text)
+            return
+        }
+        
+        currentURLString = url.absoluteString
+        //loadWebPage(url: url)
+    }
+    
+    func createValidURL(from text: String) -> URL? {
+        if let url = URL(string: text), ["http://", "https://"].contains(url.scheme?.lowercased() ?? "") {
+            return url
+        }
+        return nil
+    }
+    
+    // Выполняем поиск через Яндекс
+    func performSearch(query: String) {
+        guard let searchURL = URL(string: "https://yandex.ru/search/?text=\(query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")") else {
+            print("Ошибка формирования URL для поиска")
+            return
+        }
+        currentURLString = searchURL.absoluteString
+        //loadWebPage(url: searchURL)
+    }
 }
+        
 
 #Preview {
     ContentView()
