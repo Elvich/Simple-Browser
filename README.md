@@ -13,8 +13,8 @@ Simple Browser - проект созданный для изучения [Webkit
 
 ### Актуальные проблемы:
 
- - Необработка JavaScript ссылок
- - Съежающий UI строки поиска
+ - Необработка некоторых JavaScript ссылок и скриптов
+ - Неоткрытие прямых ссылок в битых в поиск [toolbar](https://developer.apple.com/design/human-interface-guidelines/toolbars)
 
 ### Технологии:
 
