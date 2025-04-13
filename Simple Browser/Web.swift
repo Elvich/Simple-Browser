@@ -21,6 +21,9 @@ struct WebView: UIViewRepresentable {
     
     func makeUIView(context: Context) -> WKWebView {
         let webView = WKWebView()
+        webView.configuration.defaultWebpagePreferences.allowsContentJavaScript = true
+        
+        
         let request = URLRequest(url: initialURL)
         webView.load(request)
         
@@ -36,28 +39,35 @@ struct WebView: UIViewRepresentable {
     }
     
     func makeCoordinator() -> Coordinator {
-            Coordinator(self)
+        Coordinator(self)
+    }
+    
+    class Coordinator: NSObject, WKNavigationDelegate {
+        var parent: WebView
+        
+        init(_ parent: WebView) {
+            self.parent = parent
         }
         
-        class Coordinator: NSObject, WKNavigationDelegate {
-            var parent: WebView
-            
-            init(_ parent: WebView) {
-                self.parent = parent
-            }
-            
-            // Метод для получения текущего URL при начале загрузки страницы
-            func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-                if let url = webView.url {
-                    print("Новый URL: \(url)")
-                    parent.currentURLString = url.absoluteString // Обновляем currentURL в родительском представлении
-                }
-            }
-            
-            // Метод для перехвата переходов (необязательно)
-            func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-                decisionHandler(.allow)
+        // Метод для получения текущего URL при начале загрузки страницы
+        func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+            if let url = webView.url {
+                print("Новый URL: \(url)")
+                parent.currentURLString = url.absoluteString // Обновляем currentURL в родительском представлении
             }
         }
-
+        
+        // Метод для перехвата переходов (необязательно)
+        func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+            decisionHandler(.allow)
+        }
+        
+        func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+            if let url = webView.url {
+                print("Страница загружена: \(url.absoluteString)")
+            }
+        }
+        
+    }
+    
 }

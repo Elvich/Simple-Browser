@@ -6,24 +6,36 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
-    @State private var currentURLString: String = "https://www.ya.ru"
+    @State private var currentURLString: String = "https://www.apple.com"
     @State private var inputText: String = "https://www.ya.ru"
+
     
     var body: some View {
         ZStack {
             WebView(currentURLString: $currentURLString, initialURL: URL(string: currentURLString)!)
-        
+            
             
         }
         .toolbar{
             
             ToolbarItem(placement: .bottomBar) {
                 Button(action:{
+                    print("Длина истории: -1")
+                }, label:{
+                    Image(systemName: "clock.fill")
+                        
+                })
+            }
+            
+            ToolbarItem(placement: .bottomBar) {
+                Button(action:{
                     currentURLString = "https://www.ya.ru"
                 }, label:{
-                    Image(systemName: "house")
+                    Image(systemName: "house.fill")
+                        
                 })
             }
             
@@ -31,37 +43,37 @@ struct ContentView: View {
                 HStack{
                     if currentURLString != "https://ya.ru/" {
                         
-                    
-                    TextField(
-                        "Найдется все",
-                        text: $inputText
                         
-                    )
-                    .disableAutocorrection(true)
-                    .onSubmit {
-                        loadRequest(from: inputText)
-                    }
-                    .onChange(of: currentURLString) { newValue in
-                        inputText = newValue
-                    }
+                        TextField(
+                            "Найдется все",
+                            text: $inputText
+                            
+                        )
+                        .disableAutocorrection(true)
+                        .onSubmit {
+                            loadRequest(from: inputText)
+                        }
+                        .onChange(of: currentURLString) { newValue in
+                            inputText = newValue
+                        }
                         
-                    Spacer()
-                    
-                    if !inputText.isEmpty {
-                        Button(action: {
-                            inputText = ""}) {
-                                Image(systemName: "xmark.circle.fill")
+                        Spacer()
+                        
+                        if !inputText.isEmpty {
+                            Button(action: {
+                                inputText = ""}) {
+                                    Image(systemName: "xmark.circle.fill")
                             }
+                        }
+                        
+                        Spacer()
                     }
-                }
                 }
             }
-
-            
         }
-        
-        
     }
+    
+    
     
     func loadRequest(from text: String) {
         guard let url = createValidURL(from: text) else {
@@ -71,11 +83,10 @@ struct ContentView: View {
         }
         
         currentURLString = url.absoluteString
-        //loadWebPage(url: url)
     }
     
     func createValidURL(from text: String) -> URL? {
-        if let url = URL(string: text), ["http://", "https://"].contains(url.scheme?.lowercased() ?? "") {
+        if let url = URL(string: text), ["http://www.", "https://www.", "https://", "http://"].contains(url.scheme?.lowercased() ?? "") {
             return url
         }
         return nil
@@ -88,7 +99,6 @@ struct ContentView: View {
             return
         }
         currentURLString = searchURL.absoluteString
-        //loadWebPage(url: searchURL)
     }
 }
         
