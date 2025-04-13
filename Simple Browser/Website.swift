@@ -9,12 +9,15 @@ import Foundation
 import SwiftData
 
 @Model
-final class Website {
+final class Website: Identifiable {
+    var id: String
     var url: String
     var title: String?
     var date: Date
     
     init(url: String, title: String? = nil) {
+        id = UUID().uuidString
+        
         self.url = url
         self.title = title
         

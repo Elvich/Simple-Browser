@@ -11,11 +11,14 @@ import SwiftData
 struct ContentView: View {
     @State private var currentURLString: String = "https://www.apple.com"
     @State private var inputText: String = "https://www.ya.ru"
-
+    
+    
+    @Environment(\.modelContext) private var context
+    @Query private var history: [Website]
     
     var body: some View {
         ZStack {
-            WebView(currentURLString: $currentURLString, initialURL: URL(string: currentURLString)!)
+            WebView(currentURLString: $currentURLString, initialURL: URL(string: currentURLString)!, modelcontext: context)
             
             
         }
@@ -23,7 +26,7 @@ struct ContentView: View {
             
             ToolbarItem(placement: .bottomBar) {
                 Button(action:{
-                    print("Длина истории: -1")
+                    print("Длина истории: \(history.count)")
                 }, label:{
                     Image(systemName: "clock.fill")
                         

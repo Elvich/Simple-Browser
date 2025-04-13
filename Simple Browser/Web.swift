@@ -8,15 +8,19 @@
 import Foundation
 import WebKit
 import SwiftUI
+import SwiftData
 
 struct WebView: UIViewRepresentable {
     @Binding var currentURLString: String
     let initialURL: URL
     
+    let modelcontext: ModelContext
+    
     // Явный публичный инициализатор
-    public init(currentURLString: Binding<String>, initialURL: URL) {
+    public init(currentURLString: Binding<String>, initialURL: URL, modelcontext: ModelContext) {
         self._currentURLString = currentURLString
         self.initialURL = initialURL
+        self.modelcontext = modelcontext
     }
     
     func makeUIView(context: Context) -> WKWebView {
@@ -39,21 +43,39 @@ struct WebView: UIViewRepresentable {
     }
     
     func makeCoordinator() -> Coordinator {
-        Coordinator(self)
+        Coordinator(self, modelContext: modelcontext)
     }
     
     class Coordinator: NSObject, WKNavigationDelegate {
         var parent: WebView
         
-        init(_ parent: WebView) {
+        let modelContext: ModelContext
+        
+        init(_ parent: WebView, modelContext: ModelContext) {
             self.parent = parent
+            self.modelContext = modelContext
         }
         
         // Метод для получения текущего URL при начале загрузки страницы
         func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-            if let url = webView.url {
+            if let url = webView.url{
+                if url == URL(string: parent.currentURLString)! { return }
+                
                 print("Новый URL: \(url)")
+                
+                let website = Website(url: url.absoluteString) // Создаем экземпляр класса Website
+                modelContext.insert(website) // Сохраняем website в историю
+                saveContext()
+                
                 parent.currentURLString = url.absoluteString // Обновляем currentURL в родительском представлении
+            }
+        }
+        
+        func saveContext() {
+            do {
+                try modelContext.save()
+            } catch {
+                print("Ошибка при сохранении: \(error)")
             }
         }
         
