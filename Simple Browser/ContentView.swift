@@ -9,8 +9,9 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    @State private var currentURLString: String = "https://www.apple.com"
-    @State private var inputText: String = "https://www.ya.ru"
+    @State private var currentURLString: String = DefaultsManager.shared.getValue(forKey: "standardWebSite")!
+    @State private var inputText: String = DefaultsManager.shared.getValue(forKey: "homeWebSite")!
+
     
     
     @Environment(\.modelContext) private var context
@@ -35,16 +36,16 @@ struct ContentView: View {
             
             ToolbarItem(placement: .bottomBar) {
                 Button(action:{
-                    currentURLString = "https://www.ya.ru"
+                    currentURLString = DefaultsManager.shared.getValue(forKey: "homeWebSite")!
                 }, label:{
                     Image(systemName: "house.fill")
-                        
+                    
                 })
             }
             
             ToolbarItem(placement: .bottomBar){
                 HStack{
-                    if currentURLString != "https://ya.ru/" {
+                    if currentURLString != DefaultsManager.shared.getValue(forKey: "homeWebSite")! {
                         
                         
                         TextField(
