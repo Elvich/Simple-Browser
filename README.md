@@ -2,7 +2,7 @@
 
 ### Описание:
 
-Simple Browser - проект созданный для изучения [Webkit](https://webkit.org), возможностей SwiftUi и полного циккла разработки iOS приложения.
+Simple Browser - проект созданный для изучения [Webkit](https://webkit.org), возможностей SwiftUI и SwiftData, а так же полного циккла разработки iOS приложения.
 
 ### Фичи:
 
