@@ -12,12 +12,6 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      # Устанавливаем нужную версию Xcode
-      - name: Set up Xcode
-        run: |
-          sudo xcode-select --switch /Applications/Xcode_16.app
-          xcodebuild -version
-
       # Клонируем репозиторий
       - name: Checkout
         uses: actions/checkout@v4
