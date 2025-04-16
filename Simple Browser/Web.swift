@@ -12,14 +12,12 @@ import SwiftData
 
 struct WebView: UIViewRepresentable {
     @Binding var currentURLString: String
-    let initialURL: URL
     
     let modelcontext: ModelContext
     
     // Явный публичный инициализатор
-    public init(currentURLString: Binding<String>, initialURL: URL, modelcontext: ModelContext) {
+    public init(currentURLString: Binding<String>, modelcontext: ModelContext) {
         self._currentURLString = currentURLString
-        self.initialURL = initialURL
         self.modelcontext = modelcontext
     }
     
@@ -28,7 +26,7 @@ struct WebView: UIViewRepresentable {
         webView.configuration.defaultWebpagePreferences.allowsContentJavaScript = true
         
         
-        let request = URLRequest(url: initialURL)
+        let request = URLRequest(url: URL(string: currentURLString)!)
         webView.load(request)
         
         webView.navigationDelegate = context.coordinator
