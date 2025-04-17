@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+enum ProgramState {
+    case searching
+    case history
+    
+}
