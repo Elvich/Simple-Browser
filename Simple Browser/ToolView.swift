@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ToolView: View {
     
+    @Binding var state: ProgramState
+    
     @Binding var currentURLString: String
     @State private var inputText: String = DefaultsManager.shared.getValue(forKey: "homeWebSite")!
     
@@ -23,7 +25,7 @@ struct ToolView: View {
             
             ToolbarItem(placement: .bottomBar) {
                 Button(action:{
-                    
+                    state = .history
                 }, label:{
                     Image(systemName: "clock.fill")
                         

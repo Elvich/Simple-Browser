@@ -23,7 +23,7 @@ struct ContentView: View {
             case .searching:
                 WebView(currentURLString: $currentURLString, modelcontext: context)
                 
-                ToolView(currentURLString: $currentURLString)
+                ToolView(state: $state ,currentURLString: $currentURLString)
             case .history:
                 HistoryView()
             }
