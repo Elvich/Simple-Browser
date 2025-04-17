@@ -11,6 +11,8 @@ struct ToolView: View {
     
     @Binding var currentURLString: String
     @State private var inputText: String = DefaultsManager.shared.getValue(forKey: "homeWebSite")!
+    
+    private let searching = Searching()
 
     
     var body: some View {
@@ -49,7 +51,7 @@ struct ToolView: View {
                         )
                         .disableAutocorrection(true)
                         .onSubmit {
-                            loadRequest(from: inputText)
+                            currentURLString = searching.loadRequest(from: inputText)!
                         }
                         .onChange(of: currentURLString) { newValue in
                             inputText = newValue
@@ -70,35 +72,6 @@ struct ToolView: View {
             }
         }
     }
-    
-    func loadRequest(from text: String) {
-        guard let url = createValidURL(from: text) else {
-            print("Неверный URL. Выполняем поиск...")
-            performSearch(query: text)
-            return
-        }
-        
-        currentURLString = url.absoluteString
-    }
-    
-    func createValidURL(from text: String) -> URL? {
-        if let url = URL(string: text), ["http://www.", "https://www.", "https://", "http://"].contains(url.scheme?.lowercased() ?? "") {
-            return url
-        }
-        return nil
-    }
-    
-    // Выполняем поиск через Яндекс
-    func performSearch(query: String) {
-        guard let searchURL = URL(string: "https://yandex.ru/search/?text=\(query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")") else {
-            print("Ошибка формирования URL для поиска")
-            return
-        }
-        currentURLString = searchURL.absoluteString
-    }
-    
-    
-    
 }
 
 #Preview {
