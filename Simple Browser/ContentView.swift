@@ -25,7 +25,7 @@ struct ContentView: View {
                 
                 ToolView(state: $state ,currentURLString: $currentURLString)
             case .history:
-                HistoryView(state: $state)
+                HistoryView(state: $state, currentURLString: $currentURLString)
             }
             
             

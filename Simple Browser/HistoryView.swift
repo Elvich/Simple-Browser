@@ -10,6 +10,7 @@ import SwiftData
 
 struct HistoryView: View {
     @Binding var state: ProgramState
+    @Binding var currentURLString: String
     
     @Query private var history: [Website]
     
@@ -17,8 +18,12 @@ struct HistoryView: View {
         List{
             ForEach(history){ website in
                 
-                Text(website.url)
-                
+                Button(action: {
+                    currentURLString = website.url
+                    state = .searching
+                }) {
+                    Text(website.url)
+                }
             }
         }
         .gesture(
