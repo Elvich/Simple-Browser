@@ -27,7 +27,6 @@ struct ToolView: View {
                     state = .history
                 }, label:{
                     Image(systemName: "clock.fill")
-                        
                 })
                 .padding(.leading)
                 
@@ -75,7 +74,7 @@ struct ToolView: View {
 
             }
             .padding(.top)
-            .background(Color.gray)
+            .background(Color("BackAccentColor"))
         }
         /*/.toolbar{
             
