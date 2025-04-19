@@ -15,6 +15,8 @@ struct ToolView: View {
     @State private var inputText: String = DefaultsManager.shared.getValue(forKey: "homeWebSite")!
     
     private let searching = Searching()
+    
+    @FocusState private var isTextFieldFocused: Bool
 
     
     var body: some View {
@@ -23,14 +25,20 @@ struct ToolView: View {
             
             HStack{
                 Spacer()
-                Button(action:{
-                    state = .history
-                }, label:{
-                    Image(systemName: "clock.fill")
-                })
-                .padding(.leading)
                 
-                Spacer()
+                if !isTextFieldFocused {
+                    
+                    
+                    Button(action:{
+                        state = .history
+                    }, label:{
+                        Image(systemName: "clock.fill")
+                    })
+                    .padding(.leading)
+                    
+                    Spacer()
+                }
+                
                 
                 HStack{
                     if currentURLString != DefaultsManager.shared.getValue(forKey: "homeWebSite")! {
@@ -41,17 +49,18 @@ struct ToolView: View {
                             text: $inputText
                             
                         )
+                        .focused($isTextFieldFocused)
                         .disableAutocorrection(true)
                         .onSubmit {
                             currentURLString = searching.loadRequest(from: inputText)!
                         }
-                        .onChange(of: currentURLString) { newValue in
-                            inputText = newValue
+                        .onChange(of: currentURLString) {
+                            inputText = currentURLString
                         }
                         
                         
                         
-                        if !inputText.isEmpty {
+                        if !inputText.isEmpty && isTextFieldFocused {
                             Button(action: {
                                 inputText = ""}) {
                                     Image(systemName: "xmark.circle.fill")
@@ -59,16 +68,20 @@ struct ToolView: View {
                         }
                     }
                 }
+                .padding(.horizontal)
                 
-                Spacer()
+                if !isTextFieldFocused{
                     
-                Button(action:{
-                    currentURLString = DefaultsManager.shared.getValue(forKey: "homeWebSite")!
-                }, label:{
-                    Image(systemName: "house.fill")
+                    Spacer()
                     
-                })
-                .padding(.trailing)
+                    Button(action:{
+                        currentURLString = DefaultsManager.shared.getValue(forKey: "homeWebSite")!
+                    }, label:{
+                        Image(systemName: "house.fill")
+                        
+                    })
+                    .padding(.trailing)
+                }
                 
                 Spacer()
 
@@ -76,57 +89,6 @@ struct ToolView: View {
             .padding(.top)
             .background(Color("BackAccentColor"))
         }
-        /*/.toolbar{
-            
-            ToolbarItem(placement: .bottomBar) {
-                Button(action:{
-                    state = .history
-                }, label:{
-                    Image(systemName: "clock.fill")
-                        
-                })
-            }
-            
-            ToolbarItem(placement: .bottomBar){
-                HStack{
-                    if currentURLString != DefaultsManager.shared.getValue(forKey: "homeWebSite")! {
-                        
-                        
-                        TextField(
-                            "Найдется все",
-                            text: $inputText
-                            
-                        )
-                        .disableAutocorrection(true)
-                        .onSubmit {
-                            currentURLString = searching.loadRequest(from: inputText)!
-                        }
-                        .onChange(of: currentURLString) { newValue in
-                            inputText = newValue
-                        }
-                        
-
-                        
-                        if !inputText.isEmpty {
-                            Button(action: {
-                                inputText = ""}) {
-                                    Image(systemName: "xmark.circle.fill")
-                            }
-                        }
-                        
-                    }
-                }
-            }
-            
-            ToolbarItem(placement: .bottomBar) {
-                Button(action:{
-                    currentURLString = DefaultsManager.shared.getValue(forKey: "homeWebSite")!
-                }, label:{
-                    Image(systemName: "house.fill")
-                    
-                })
-            }
-        }*/
     }
 }
 
