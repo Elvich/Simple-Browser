@@ -16,7 +16,7 @@ struct HistoryView: View {
     
     var body: some View {
         List{
-            ForEach(history){ website in
+            ForEach(history.reversed()){ website in
                 
                 Button(action: {
                     currentURLString = website.url

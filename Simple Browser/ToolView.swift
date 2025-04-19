@@ -10,13 +10,12 @@ import SwiftUI
 struct ToolView: View {
     
     @Binding var state: ProgramState
-    
     @Binding var currentURLString: String
+    
+    @FocusState private var isTextFieldFocused: Bool
     @State private var inputText: String = DefaultsManager.shared.getValue(forKey: "homeWebSite")!
     
     private let searching = Searching()
-    
-    @FocusState private var isTextFieldFocused: Bool
 
     
     var body: some View {
@@ -78,6 +77,7 @@ struct ToolView: View {
                         currentURLString = DefaultsManager.shared.getValue(forKey: "homeWebSite")!
                     }, label:{
                         Image(systemName: "house.fill")
+                            
                         
                     })
                     .padding(.trailing)

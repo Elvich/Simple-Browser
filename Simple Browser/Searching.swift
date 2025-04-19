@@ -10,7 +10,7 @@ import Foundation
 struct Searching {
     
     func loadRequest(from text: String) -> String? {
-        guard let url = createValidURL(from: text) else {
+        guard let url = buildingFullURL(from: text) else {
             print("Неверный URL. Выполняем поиск...")
             return performSearch(query: text)
         }
@@ -18,11 +18,10 @@ struct Searching {
         return url.absoluteString
     }
     
-    private func createValidURL(from text: String) -> URL? {
-        if let url = URL(string: text), ["http://www.", "https://www.", "https://", "http://"].contains(url.scheme?.lowercased() ?? "") {
-            return url
-        }
-        return nil
+    private func checkValidURL(_ urlString: String) -> Bool {
+        let regex = "^(https?://)([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,}(\\/\\S*)?$"
+        let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
+        return predicate.evaluate(with: urlString)
     }
     
     // Выполняем поиск через Яндекс
@@ -32,5 +31,30 @@ struct Searching {
             return nil
         }
         return searchURL.absoluteString
+    }
+    
+    private func buildingFullURL(from input:String) -> URL? {
+        
+        var input = input.lowercased()
+        let trimmedInput = input.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        guard !trimmedInput.isEmpty else {
+            return nil
+        }
+        
+        
+        if checkValidURL(trimmedInput) {
+            return URL(string: trimmedInput)
+        }
+        
+        input = trimmedInput
+        input = "https://" + input
+        
+        
+        if checkValidURL(input){
+            return URL(string: input)
+        }
+        
+        return nil
     }
 }
