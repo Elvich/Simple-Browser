@@ -14,7 +14,6 @@ struct ContentView: View {
     @State private var currentURLString: String = DefaultsManager.shared.getValue(forKey: "standardWebSite")!
     
     @Environment(\.modelContext) private var context
-    @Query private var history: [Website]
     
     var body: some View {
         ZStack {
@@ -24,6 +23,7 @@ struct ContentView: View {
                 WebView(currentURLString: $currentURLString, modelcontext: context)
                 
                 ToolView(state: $state ,currentURLString: $currentURLString)
+                
             case .history:
                 HistoryView(state: $state, currentURLString: $currentURLString)
             }

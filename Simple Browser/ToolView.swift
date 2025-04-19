@@ -20,8 +20,64 @@ struct ToolView: View {
     var body: some View {
         VStack{
             Spacer()
+            
+            HStack{
+                Spacer()
+                Button(action:{
+                    state = .history
+                }, label:{
+                    Image(systemName: "clock.fill")
+                        
+                })
+                .padding(.leading)
+                
+                Spacer()
+                
+                HStack{
+                    if currentURLString != DefaultsManager.shared.getValue(forKey: "homeWebSite")! {
+                        
+                        
+                        TextField(
+                            "Найдется все",
+                            text: $inputText
+                            
+                        )
+                        .disableAutocorrection(true)
+                        .onSubmit {
+                            currentURLString = searching.loadRequest(from: inputText)!
+                        }
+                        .onChange(of: currentURLString) { newValue in
+                            inputText = newValue
+                        }
+                        
+                        
+                        
+                        if !inputText.isEmpty {
+                            Button(action: {
+                                inputText = ""}) {
+                                    Image(systemName: "xmark.circle.fill")
+                                }
+                        }
+                    }
+                }
+                
+                Spacer()
+                    
+                Button(action:{
+                    currentURLString = DefaultsManager.shared.getValue(forKey: "homeWebSite")!
+                }, label:{
+                    Image(systemName: "house.fill")
+                    
+                })
+                .padding(.trailing)
+                
+                Spacer()
+
+            }
+            .padding(.top)
+            .background(Color.gray)
         }
-        .toolbar{
+        /*/.toolbar{
             
             ToolbarItem(placement: .bottomBar) {
                 Button(action:{
@@ -29,15 +85,6 @@ struct ToolView: View {
                 }, label:{
                     Image(systemName: "clock.fill")
                         
-                })
-            }
-            
-            ToolbarItem(placement: .bottomBar) {
-                Button(action:{
-                    currentURLString = DefaultsManager.shared.getValue(forKey: "homeWebSite")!
-                }, label:{
-                    Image(systemName: "house.fill")
-                    
                 })
             }
             
@@ -59,7 +106,7 @@ struct ToolView: View {
                             inputText = newValue
                         }
                         
-                        Spacer()
+
                         
                         if !inputText.isEmpty {
                             Button(action: {
@@ -68,11 +115,19 @@ struct ToolView: View {
                             }
                         }
                         
-                        Spacer()
                     }
                 }
             }
-        }
+            
+            ToolbarItem(placement: .bottomBar) {
+                Button(action:{
+                    currentURLString = DefaultsManager.shared.getValue(forKey: "homeWebSite")!
+                }, label:{
+                    Image(systemName: "house.fill")
+                    
+                })
+            }
+        }*/
     }
 }
 
