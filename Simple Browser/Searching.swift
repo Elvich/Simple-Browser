@@ -35,8 +35,8 @@ struct Searching {
     
     private func buildingFullURL(from input:String) -> URL? {
         
-        var input = input.lowercased()
-        let trimmedInput = input.trimmingCharacters(in: .whitespacesAndNewlines)
+        var trimmedInput = input.lowercased()
+        trimmedInput = trimmedInput.trimmingCharacters(in: .whitespacesAndNewlines)
         
         guard !trimmedInput.isEmpty else {
             return nil
@@ -47,12 +47,11 @@ struct Searching {
             return URL(string: trimmedInput)
         }
         
-        input = trimmedInput
-        input = "https://" + input
+        trimmedInput = "https://" + trimmedInput
         
         
-        if checkValidURL(input){
-            return URL(string: input)
+        if checkValidURL(trimmedInput){
+            return URL(string: trimmedInput)
         }
         
         return nil

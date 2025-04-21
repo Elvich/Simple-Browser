@@ -9,13 +9,9 @@ import SwiftUI
 
 struct ToolView: View {
     
-    @Binding var state: ProgramState
-    @Binding var currentURLString: String
+    @StateObject var viewModel: ToolViewModel
     
     @FocusState private var isTextFieldFocused: Bool
-    @State private var inputText: String = DefaultsManager.shared.getValue(forKey: "homeWebSite")!
-    
-    private let searching = Searching()
 
     
     var body: some View {
@@ -29,7 +25,7 @@ struct ToolView: View {
                     
                     
                     Button(action:{
-                        state = .history
+                        viewModel.changeProgramState(.history)
                     }, label:{
                         Image(systemName: "clock.fill")
                     })
@@ -40,28 +36,27 @@ struct ToolView: View {
                 
                 
                 HStack{
-                    if currentURLString != DefaultsManager.shared.getValue(forKey: "homeWebSite")! {
+                    if viewModel.tool.content.currentURLString != DefaultsManager.shared.getValue(forKey: "homeWebSite")! {
                         
                         
                         TextField(
                             "Найдется все",
-                            text: $inputText
-                            
+                            text: $viewModel.tool.inputText
                         )
                         .focused($isTextFieldFocused)
                         .disableAutocorrection(true)
                         .onSubmit {
-                            currentURLString = searching.loadRequest(from: inputText)!
+                            viewModel.changeCurrentURL(viewModel.tool.inputText)
                         }
-                        .onChange(of: currentURLString) {
-                            inputText = currentURLString
+                        .onChange(of: viewModel.tool.content.currentURLString) {
+                            viewModel.tool.inputText = viewModel.tool.content.currentURLString
                         }
                         
                         
                         
-                        if !inputText.isEmpty && isTextFieldFocused {
+                        if !viewModel.tool.inputText.isEmpty && isTextFieldFocused {
                             Button(action: {
-                                inputText = ""}) {
+                                viewModel.tool.inputText = ""}) {
                                     Image(systemName: "xmark.circle.fill")
                                 }
                         }
@@ -74,7 +69,7 @@ struct ToolView: View {
                     Spacer()
                     
                     Button(action:{
-                        currentURLString = DefaultsManager.shared.getValue(forKey: "homeWebSite")!
+                        viewModel.changeCurrentURL( DefaultsManager.shared.getValue(forKey: "homeWebSite")!)
                     }, label:{
                         Image(systemName: "house.fill")
                             

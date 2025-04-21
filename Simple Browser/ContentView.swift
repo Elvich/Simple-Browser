@@ -9,23 +9,25 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    @State private var state: ProgramState = .searching
     
-    @State private var currentURLString: String = DefaultsManager.shared.getValue(forKey: "standardWebSite")!
-    
+    @State var content = ContentModel()    
     @Environment(\.modelContext) private var context
     
     var body: some View {
         ZStack {
             
-            switch state {
+            switch content.state {
             case .searching:
-                WebView(currentURLString: $currentURLString, modelcontext: context)
+                WebView(currentURLString: $content.currentURLString, modelcontext: context)
                 
-                ToolView(state: $state ,currentURLString: $currentURLString)
+                let tool = Tool(content: $content)
+                let toolViewModel = ToolViewModel(tool: tool)
+                
+                ToolView(viewModel: toolViewModel)
                 
             case .history:
-                HistoryView(state: $state, currentURLString: $currentURLString)
+                //Устарели зависимости
+                HistoryView(content: $content)
             }
             
             

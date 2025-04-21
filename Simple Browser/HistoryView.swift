@@ -9,8 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct HistoryView: View {
-    @Binding var state: ProgramState
-    @Binding var currentURLString: String
+    @Binding var content: ContentModel
     
     @Query private var history: [Website]
     
@@ -19,8 +18,8 @@ struct HistoryView: View {
             ForEach(history.reversed()){ website in
                 
                 Button(action: {
-                    currentURLString = website.url
-                    state = .searching
+                    content.currentURLString = website.url
+                    content.state = .searching
                 }) {
                     Text(website.url)
                 }
@@ -30,7 +29,7 @@ struct HistoryView: View {
             DragGesture(minimumDistance: 50, coordinateSpace: .local)
                 .onEnded { value in
                     if value.translation.width > 0  {
-                        state = .searching
+                        content.state = .searching
                     }
                 })
     }
