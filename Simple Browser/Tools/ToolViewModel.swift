@@ -23,4 +23,8 @@ class ToolViewModel: ObservableObject {
     func changeCurrentURL(_ newURL:String){
         tool.content.currentURLString = searching.loadRequest(from: newURL)!
     }
+    
+    func refillingInputString(){
+        tool.inputText = tool.content.currentURLString
+    }
 }

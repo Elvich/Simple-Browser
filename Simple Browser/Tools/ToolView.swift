@@ -49,7 +49,7 @@ struct ToolView: View {
                             viewModel.changeCurrentURL(viewModel.tool.inputText)
                         }
                         .onChange(of: viewModel.tool.content.currentURLString) {
-                            viewModel.tool.inputText = viewModel.tool.content.currentURLString
+                            viewModel.refillingInputString()
                         }
                         
                         
