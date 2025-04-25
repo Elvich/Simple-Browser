@@ -17,15 +17,15 @@ struct Searching {
         
         return url.absoluteString
     }
-    
-    private func checkValidURL(_ urlString: String) -> Bool {
+    // Проверяем валидность ссылки
+    func checkValidURL(_ urlString: String) -> Bool {
         let regex = "^(https?://)([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,}(\\/\\S*)?$"
         let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
         return predicate.evaluate(with: urlString)
     }
     
     // Выполняем поиск через Яндекс
-    private func performSearch(query: String) -> String? {
+    func performSearch(query: String) -> String? {
         guard let searchURL = URL(string: "https://yandex.ru/search/?text=\(query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")") else {
             print("Ошибка формирования URL для поиска")
             return nil
@@ -33,7 +33,7 @@ struct Searching {
         return searchURL.absoluteString
     }
     
-    private func buildingFullURL(from input:String) -> URL? {
+    func buildingFullURL(from input:String) -> URL? {
         
         var trimmedInput = input.lowercased()
         trimmedInput = trimmedInput.trimmingCharacters(in: .whitespacesAndNewlines)

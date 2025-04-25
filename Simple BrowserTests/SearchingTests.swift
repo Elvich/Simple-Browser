@@ -16,5 +16,10 @@ struct SearchingTests {
     func testLoadRequest(_ input: String, _ output: String) async throws {
         #expect(search.loadRequest(from: input) == output)
     }
+    
+    @Test(arguments: [("www.google.com", false), ("https://www.youtube.com", true), ("ya.ru", false), ("vk", false)])
+    func testperformSearch(_ input: String, _ output: Bool) async throws {
+        #expect(search.checkValidURL(input) == output)
+    }
 
 }
