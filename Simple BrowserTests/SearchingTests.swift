@@ -6,11 +6,15 @@
 //
 
 import Testing
+@testable import Simple_Browser
 
 struct SearchingTests {
 
-    @Test func <#test function name#>() async throws {
-        // Write your test here and use APIs like `#expect(...)` to check expected conditions.
+    let search = Searching()
+
+    @Test(arguments: [("www.google.com", "https://www.google.com"), ("https://www.youtube.com", "https://www.youtube.com"), ("ya.ru", "https://ya.ru"), ("vk", "https://yandex.ru/search/?text=vk")])
+    func testLoadRequest(_ input: String, _ output: String) async throws {
+        #expect(search.loadRequest(from: input) == output)
     }
 
 }

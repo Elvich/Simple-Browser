@@ -9,9 +9,7 @@ import Testing
 @testable import Simple_Browser
 
 struct Simple_BrowserTests {
-
-    @Test func testLoadRequest() async throws {
-        // Write your test here and use APIs like `#expect(...)` to check expected conditions.
-    }
+    
+    
 
 }
