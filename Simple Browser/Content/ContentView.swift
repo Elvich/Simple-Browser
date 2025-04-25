@@ -26,7 +26,6 @@ struct ContentView: View {
                 ToolView(viewModel: toolViewModel)
                 
             case .history:
-                //Устарели зависимости
                 HistoryView(content: $content)
             }
             
