@@ -16,6 +16,8 @@ struct ContentView: View {
     var body: some View {
         ZStack {
             WebView(currentURLString: $content.currentURLString, modelcontext: context)
+                .cornerRadius(5)
+                
             
             let tool = Tool(content: $content)
             let toolViewModel = ToolViewModel(tool: tool)
@@ -23,7 +25,8 @@ struct ContentView: View {
             ToolView(viewModel: toolViewModel)
             
             
-        }.sheet(isPresented: Binding(
+        }
+        .sheet(isPresented: Binding(
             get: { self.content.state == .history },
             set: { if !$0 { self.content.state = .searching } }
         )) {
