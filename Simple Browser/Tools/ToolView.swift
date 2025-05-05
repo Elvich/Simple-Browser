@@ -23,15 +23,17 @@ struct ToolView: View {
                 
                 if !isTextFieldFocused {
                     
-                    
-                    Button(action:{
-                        viewModel.changeProgramState(.history)
-                    }, label:{
-                        Image(systemName: "clock.fill")
-                    })
-                    .padding(.leading)
-                    
-                    Spacer()
+                    HStack{
+                        
+                        Button(action:{
+                            viewModel.changeProgramState(.history)
+                        }, label:{
+                            Image(systemName: "clock.fill")
+                        })
+                        .padding(.leading)
+                        
+                    }
+                    .animation(.bouncy, value: isTextFieldFocused)
                 }
                 
                 HStack{
@@ -65,16 +67,17 @@ struct ToolView: View {
                 
                 if !isTextFieldFocused{
                     
-                    Spacer()
-                    
-                    Button(action:{
-                        viewModel.changeCurrentURL( DefaultsManager.shared.getValue(forKey: "homeWebSite")!)
-                    }, label:{
-                        Image(systemName: "house.fill")
+                    HStack{
+                        Button(action:{
+                            viewModel.changeCurrentURL( DefaultsManager.shared.getValue(forKey: "homeWebSite")!)
+                        }, label:{
+                            Image(systemName: "house.fill")
                             
-                        
-                    })
-                    .padding(.trailing)
+                            
+                        })
+                        .padding(.trailing)
+                    }
+                    .animation(.bouncy, value: isTextFieldFocused)
                 }
                 
                 Spacer()
@@ -82,6 +85,7 @@ struct ToolView: View {
             }
             .padding(.top)
             .background(Color("BackAccentColor"))
+            
         }
         .animation(.bouncy, value: isTextFieldFocused)
     }
