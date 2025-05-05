@@ -15,21 +15,19 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
+            WebView(currentURLString: $content.currentURLString, modelcontext: context)
             
-            switch content.state {
-            case .searching:
-                WebView(currentURLString: $content.currentURLString, modelcontext: context)
-                
-                let tool = Tool(content: $content)
-                let toolViewModel = ToolViewModel(tool: tool)
-                
-                ToolView(viewModel: toolViewModel)
-                
-            case .history:
-                HistoryView(content: $content)
-            }
+            let tool = Tool(content: $content)
+            let toolViewModel = ToolViewModel(tool: tool)
+            
+            ToolView(viewModel: toolViewModel)
             
             
+        }.sheet(isPresented: Binding(
+            get: { self.content.state == .history },
+            set: { if !$0 { self.content.state = .searching } }
+        )) {
+            HistoryView(content: $content)
         }
     }
 }

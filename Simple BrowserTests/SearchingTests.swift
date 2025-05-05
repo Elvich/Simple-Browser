@@ -28,7 +28,7 @@ struct SearchingTests {
         #expect(search.performSearch(query: input) == output)
     }
     
-    @Test(arguments: [("google.com", URL(string: "https://google.com/")), ("YouTube", URL(string: "https://www.youtube.com/")), ("яндекс", nil), ("", nil)])
+    @Test(arguments: [("google.com", URL(string: "https://google.com")), ("youtube.com", URL(string: "https://youtube.com")), ("яндекс", nil), ("", nil)])
     func testbuildingFullURL(_ input: String, _ output: URL?) async throws {
         #expect(search.buildingFullURL(from: input) == output)
     }
