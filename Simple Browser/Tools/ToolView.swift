@@ -34,7 +34,6 @@ struct ToolView: View {
                     Spacer()
                 }
                 
-                
                 HStack{
                     if viewModel.tool.content.currentURLString != DefaultsManager.shared.getValue(forKey: "homeWebSite")! {
                         
@@ -84,6 +83,7 @@ struct ToolView: View {
             .padding(.top)
             .background(Color("BackAccentColor"))
         }
+        .animation(.bouncy, value: isTextFieldFocused)
     }
 }
 
