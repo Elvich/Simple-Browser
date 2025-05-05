@@ -21,4 +21,5 @@ Simple Browser - проект созданный для изучения [Webkit
  - Swift
  - SwiftUI
  - SwiftData
+ - Swift Testing
  - WebKit
