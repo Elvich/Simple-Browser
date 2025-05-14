@@ -15,10 +15,7 @@ class DefaultsManager {
     
     // Метод для получения значения по ключу
     func getValue<T>(forKey key: String) -> T? {
-        guard let path = Bundle.main.path(forResource: "Defaults", ofType: "plist") else {
-            print("Файл Defaults.plist не найден")
-            return nil
-        }
+        let path = try! checkDefaultsFileExists()
         
         let url = URL(fileURLWithPath: path)
         do {
@@ -30,5 +27,34 @@ class DefaultsManager {
             print("Ошибка при чтении файла Defaults.plist: \(error)")
         }
         return nil
+    }
+    
+    func setValue<T>(_ value: T?, forKey key: String) -> Bool {
+        let path = try! checkDefaultsFileExists()
+        
+        let url = URL(fileURLWithPath: path)
+        do {
+            let data = try Data(contentsOf: url)
+            if var result = try PropertyListSerialization.propertyList(from: data, options: [], format: nil) as? [String: Any] {
+                result[key] = value
+            }
+            return true
+        } catch {
+            print("Ошибка при чтении файла Defaults.plist: \(error)")
+            return false
+        }
+    }
+    
+    private func checkDefaultsFileExists() throws -> String {
+        guard let path = Bundle.main.path(forResource: "Defaults", ofType: "plist") else {
+            print("Файл Defaults.plist не найден")
+            
+            let error = NSError(domain: NSCocoaErrorDomain, code: 4, userInfo: [
+                    NSLocalizedDescriptionKey: "Файл не найден."
+                ])
+            throw error
+        }
+        
+        return path
     }
 }
